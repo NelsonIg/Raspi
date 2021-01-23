@@ -129,5 +129,5 @@ dmypy.json
 .pyre/
 
 # Secrets
-*/secrets.h
-*/secret.h
+secrets.h
+secret.h
