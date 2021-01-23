@@ -26,3 +26,21 @@ hostname might be raspberrypi or pi, also mdns might be supported from beginning
 ```
 ssh pi@raspberrypi.local or pi@pi.local
 ```
+## Mosquitto
+```
+https://mosquitto.org/man/mosquitto-8.html
+https://mosquitto.org/man/mosquitto_sub-1.html
+https://mosquitto.org/man/mosquitto_pub-1.html
+
+sudo apt update
+sudo apt install mosquito
+sudo apt install mosquitto-clients
+
+mosquitto -d (deamon)
+sudo service mosquitto status
+
+sudo service mosquitto stop
+alternativ:
+	netstat -at -- PID finden
+	kill <pid>
+```
