@@ -4,7 +4,7 @@ Setup Raspi and Mosquitto
 ## Image
 Download  [Raspberry Pi Imager](https://www.raspberrypi.org/documentation/installation/installing-images/)
 ## Wifi and SSH
-+ Load empty file "ssh" on SD Card
++ Load empty file "ssh" on SD-Card
 + create 'wpa_supplicant.conf' like below:
 
 ```
