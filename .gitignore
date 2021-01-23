@@ -128,6 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Secrets
+# Added by me
 secrets.h
 secret.h
+.idea/
