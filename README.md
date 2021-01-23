@@ -18,3 +18,11 @@ network={
 }
 ```
 More info [here](https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md)
++ Connect via ssh
+```
+ssh hostname@ip
+```
+hostname might be raspberrypi or pi, also mdns might be supported from beginning:
+```
+ssh pi@raspberrypi.local or pi@pi.local
+```
