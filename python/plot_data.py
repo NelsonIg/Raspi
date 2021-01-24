@@ -1,13 +1,21 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import datetime as date
+import numpy as np
+now = date.datetime.now()
 
-sensor_data = pd.read_csv("sensorData.csv")
-data_slice = sensor_data[sensor_data.index%12==0]  # pick one sample per minute
+sensor_data = pd.read_csv(f'{now.year}-{now.day}-sensor_data.csv')
 
-t = range(0,len(data_slice['temperature'].values),1) # t in 1 min interval
-ax = data_slice.plot(y=['temperature', 'humidity'], label=["temperature [°C]", "humidity [%]"])
-ax.set_xticks(data_slice.index.values)
-ax.set_xticklabels(t)
-plt.title('Small Window half opened')
-plt.xlabel('time [min]')
+# compute average
+WINDOW_SIZE = 5
+WINDOW_TYPE = None  # 'gaussian, 'triang'
+moving_average = sensor_data.rolling(WINDOW_SIZE).mean()
+STEP = 1
+data_slice = moving_average[::STEP]
+
+fix, axis = plt.subplots(1,1)
+ax = data_slice.plot(y=['temperature', 'humidity'], label=["temperature mean [°C]", "humidity mean [%]"], ax=axis)
+ax2 = sensor_data.plot(y=['temperature', 'humidity'], label=["temperature [°C]", "humidity [%]"], ax=axis)
+plt.title('Big Window half opened')
+plt.xlabel(f'Window: ({WINDOW_SIZE}, {WINDOW_TYPE})')
 plt.show()

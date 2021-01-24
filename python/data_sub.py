@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-import json
+import json, os
 import datetime as date
 import pandas as pd
 
@@ -24,13 +24,26 @@ def on_message(client, userdata, msg):
     print(msg.topic+" "+msg.payload.decode())
     data = json.loads(msg.payload)  # json to dict
     now = date.datetime.now()  # get timestamp
-    # construct dataframe
-    df = pd.DataFrame({"date": [str(now)],
-                       "temperature": [data['temperature']],
-                       "humidity": [data['humidity']]})
-    data_df = data_df.append(df, ignore_index=True)  # append to global DataFrame
-    print(data_df)
-    data_df.to_csv("sensorData.csv")
+    # append date to data
+    data.update({'date': str(now)})
+    print(data)
+    data_to_csv('sensor_data', data)
+
+
+def data_to_csv(filename: str, data: dict):
+    """store data to filename as csv"""
+    now = date.datetime.now()
+    file_date = f'{now.year}-{now.day}'  # one file per day
+    filename = file_date+'-'+filename+'.csv'
+    data_line = f"{data['date']}, {data['temperature']}, {data['humidity']}\n"  # sensor data
+    if not os.path.exists(filename):
+        first_line = "date,temperature,humidity\n"  # header
+        with open(filename, 'w') as f:
+            f.write(first_line+data_line)
+    else:
+        with open(filename, 'a') as f:
+            f.write(data_line)
+
 
 
 def main(mqtt_host="localhost", port=1883):
