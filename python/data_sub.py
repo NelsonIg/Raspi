@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-import json, os
+import json, os, sys
 import datetime as date
 import pandas as pd
 
@@ -59,5 +59,8 @@ def main(mqtt_host="localhost", port=1883):
 
 
 if __name__ == '__main__':
-    main("192.168.0.183")
+    if len(sys.argv) > 1:
+        main(mqtt_host=sys.argv[1], port=int(sys.argv[2]))
+    else:
+        main("192.168.0.183")
 

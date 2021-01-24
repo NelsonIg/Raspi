@@ -13,9 +13,13 @@ moving_average = sensor_data.rolling(WINDOW_SIZE).mean()
 STEP = 1
 data_slice = moving_average[::STEP]
 
-fix, axis = plt.subplots(1,1)
+fig, axis = plt.subplots(1,1)
 ax = data_slice.plot(y=['temperature', 'humidity'], label=["temperature mean [°C]", "humidity mean [%]"], ax=axis)
 ax2 = sensor_data.plot(y=['temperature', 'humidity'], label=["temperature [°C]", "humidity [%]"], ax=axis)
 plt.title('Random Test')
 plt.xlabel(f'Window: ({WINDOW_SIZE}, {WINDOW_TYPE})')
+
+
+data_slice.hist(bins=50)
+sensor_data.hist(bins=50)
 plt.show()
