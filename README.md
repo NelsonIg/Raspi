@@ -43,4 +43,14 @@ sudo service mosquitto stop
 alternativ:
 	netstat -at -- PID finden
 	kill <pid>
+
+```
+
+## Running Subscribe client (Python3.7)
+```
+pip3 install -r requirements
+pip3 uninstall numpy
+pip3 uninstall pandas
+pip3 apt install python3-numpy
+pip3 apt install python3-pandas
 ```
