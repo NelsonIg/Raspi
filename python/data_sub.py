@@ -28,7 +28,7 @@ def on_message(client, userdata, msg):
     now = date.datetime.now()  # get timestamp
     # append date to data
     data.update({'date': str(now)})
-    print(data)
+    # print(data)
     data_to_csv('sensor_data', data)
 
 
@@ -40,6 +40,7 @@ def data_to_csv(filename: str, data: dict):
     data_line = f"{data['date']}, {data['temperature']}, {data['humidity']}\n"  # sensor data
     if not os.path.exists(filename):
         first_line = "date,temperature,humidity\n"  # header
+        print('store data to '+filename)
         with open(filename, 'w') as f:
             f.write(first_line+data_line)
     else:
