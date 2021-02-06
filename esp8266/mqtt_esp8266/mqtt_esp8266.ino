@@ -108,6 +108,7 @@ void reconnect(){
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
+      digitalWrite(BUILTIN_LED, LOW);
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -135,15 +136,6 @@ void sensorInit(){
     Serial.println();
 }
 
-void setup() {
-  sensorInit();
-  pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
-  Serial.begin(115200);
-  setup_wifi();
-  client.setServer(mqtt_server, 1883);
-  client.setCallback(callback);
-}
-
 void sensorPub(){
   // Publish sensor data
   // test with: mosquitto_sub -t "bme280"
@@ -159,9 +151,20 @@ void sensorPub(){
   client.publish("bme280", charMsg);
 }
 
+void setup() {
+  sensorInit();
+  pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
+  digitalWrite(BUILTIN_LED, HIGH);
+  Serial.begin(115200);
+  setup_wifi();
+  client.setServer(mqtt_server, 1883);
+  client.setCallback(callback);
+}
+
 void loop() {
 
   if (!client.connected()) {
+    digitalWrite(BUILTIN_LED, HIGH);
     reconnect();
   }
   client.loop();
