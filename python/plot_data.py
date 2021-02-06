@@ -4,11 +4,11 @@ import datetime as date
 import numpy as np
 now = date.datetime.now()
 
-sensor_data = pd.read_csv(f'{now.year}-{now.day}-sensor_data.csv')
+sensor_data = pd.read_csv(f'{now.year}-{now.month}-{now.day}-sensor_data.csv')
 
 # compute average
 WINDOW_SIZE = 6
-WINDOW_TYPE = 'gaussian'  # None, 'triang'
+WINDOW_TYPE = None  # 'gaussian'  # None, 'triang'
 moving_average = sensor_data.rolling(WINDOW_SIZE).mean()
 STEP = 1
 data_slice = moving_average[::STEP]
@@ -20,6 +20,6 @@ plt.title('Random Test')
 plt.xlabel(f'Window: ({WINDOW_SIZE}, {WINDOW_TYPE})')
 
 
-data_slice.hist(bins=50)
-sensor_data.hist(bins=50)
+# data_slice.hist(bins=50)
+# sensor_data.hist(bins=50)
 plt.show()

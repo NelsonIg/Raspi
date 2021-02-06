@@ -35,7 +35,7 @@ def on_message(client, userdata, msg):
 def data_to_csv(filename: str, data: dict):
     """store data to filename as csv"""
     now = date.datetime.now()
-    file_date = f'{now.year}-{now.day}'  # one file per day
+    file_date = f'{now.year}-{now.month}-{now.day}'  # one file per day
     filename = file_date+'-'+filename+'.csv'
     data_line = f"{data['date']}, {data['temperature']}, {data['humidity']}\n"  # sensor data
     if not os.path.exists(filename):
