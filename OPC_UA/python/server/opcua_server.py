@@ -37,7 +37,7 @@ def callback_rpm():
 
 async def rpm():
    global old_edge, new_edge, callback_flag, callback_count, rpm_is
-   _logger.info(f'{rpm_is}, {callback_count}')
+   _logger.info(f'CallbackCount: {callback_count}')
    if callback_flag:
       callback_flag , callback_count = False, 0
       if old_edge and new_edge:
