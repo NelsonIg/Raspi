@@ -32,7 +32,7 @@ async def callback_rpm():
    global old_edge, new_edge, rpm_is, edge, callback_flag
    edge = True
    old_edge = new_edge
-   await new_edge = time.clock_gettime_ns(time.CLOCK_MONOTONIC)
+   new_edge = await time.clock_gettime_ns(time.CLOCK_MONOTONIC)
    callback_flag = True
 
 async def rpm():
