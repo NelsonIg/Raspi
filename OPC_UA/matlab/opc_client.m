@@ -29,3 +29,12 @@ while i < 101
 end
 figure
 plot(rpm);
+
+%% Read and Write Values
+
+S = opcuaserverinfo(host);
+uaClient = opcua(S(1));
+connect(uaClient)
+Car = findNodeByName(uaClient.Namespace, 'Car')
+motor = findNodeByName(Car, 'motor')
+motor.writeValue(100);

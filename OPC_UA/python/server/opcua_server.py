@@ -89,7 +89,10 @@ async def main():
             if rpm_is>-1:
                 await rpm_var.write_value(rpm_is)
             speed = await motor_var.read_value()
-            motor.forward(speed) 
+            try:
+                motor.forward(speed)
+            except ValueError:
+                _logger.warning(f'{speed} no valid speed')
             _logger.info(f'\t\tRPM: {rpm_is}\n\t\t\tMotor: {await motor_var.read_value()}')
             
 
