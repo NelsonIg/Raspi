@@ -46,7 +46,7 @@ async def rpm():
          return -1
    else:
       if callback_count >10:
-         return = 0
+         return 0
       else:
          callback_count+=1
          return -1
