@@ -37,20 +37,20 @@ host = '192.168.0.183';
 Car = findNodeByName(uaClient.Namespace, 'Car', '-once');
 motor = findNodeByName(Car, 'motor', '-once');
 rpm = findNodeByName(Car, 'rpm', '-once');
-rpmSet = 100;
+rpmSet = 300;
 step = 0.002;
 period = 0.01; % sec
-speed = 0;
+speed = 0.1;
 i = 1;
 error = 0;
 motor.writeValue(0.0);
 pause(2);
-rpmVals = ones(1,1000);
-while i<1001
+rpmVals = ones(1,100);
+while i<301
     if error < 0
-        speed = speed - step;
+        speed = speed - step
     else
-        speed = speed + step;
+        speed = speed + step
     end
     if speed > 1
         speed = 1;
@@ -59,14 +59,15 @@ while i<1001
         speed = 0;
     end
     motor.writeValue(speed)
-    rpmIs = rpm.readValue()
+    rpmIs = rpm.readValue();
     rpmVals(i) = rpmIs;
     if rpmIs > -1
         error = rpmSet-rpmIs;
     end
-    pause(0.01)
+    pause(0.1)
     i = i+1;
 end
+motor.writeValue(0.0);
 figure
 plot(rpmVals);
     
