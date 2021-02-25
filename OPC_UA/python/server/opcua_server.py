@@ -28,11 +28,11 @@ callback_flag, callback_count = False, 0
 logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger('asyncua')
 
-async def callback_rpm():
+def callback_rpm():
    global old_edge, new_edge, rpm_is, edge, callback_flag
    edge = True
    old_edge = new_edge
-   new_edge = await time.clock_gettime_ns(time.CLOCK_MONOTONIC)
+   new_edge = time.clock_gettime_ns(time.CLOCK_MONOTONIC)
    callback_flag = True
 
 async def rpm():
@@ -78,7 +78,7 @@ async def main():
         while True:
             await asyncio.sleep(1)
             await rpm()
-            if rpm_is>0:
+            if rpm_is>-1:
                 await myvar.write_value(rpm_is)
                 await _logger.info(f'RPM: {myvar.read_value()}')
             
