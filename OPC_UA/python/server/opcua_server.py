@@ -86,7 +86,7 @@ async def main():
             rpm_is = await rpm()
             if rpm_is>-1:
                 await rpm_var.write_value(rpm_is)
-                _logger.info(f'\t\tRPM: {rpm_is} Motor: {await motor_var.read_value()}')
+                _logger.info(f'\t\tRPM: {rpm_is}\n\t\tMotor: {await motor_var.read_value()}')
             
 
 
