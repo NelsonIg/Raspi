@@ -37,7 +37,7 @@ def callback_rpm():
 
 async def rpm():
    global old_edge, new_edge, callback_flag, callback_count, rpm_is
-   _logger.info(f'CallbackCount: {callback_count}')
+   _logger.info(f'\t\tCallbackCount: {callback_count}')
    if callback_flag:
       callback_flag , callback_count = False, 0
       if old_edge and new_edge:
@@ -86,7 +86,7 @@ async def main():
             rpm_is = await rpm()
             if rpm_is>-1:
                 await rpm_var.write_value(rpm_is)
-                _logger.info(f'\nRPM: {rpm_is} Motor: {await motor_var.read_value()}')
+                _logger.info(f'\t\tRPM: {rpm_is} Motor: {await motor_var.read_value()}')
             
 
 
