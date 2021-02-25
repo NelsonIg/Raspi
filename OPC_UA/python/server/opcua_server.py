@@ -92,7 +92,7 @@ async def main():
             try:
                 motor.forward(speed)
             except ValueError:
-                _logger.warning(f'{speed} no valid speed')
+                _logger.warning(f'\t\t{speed} no valid speed')
             _logger.info(f'\t\tRPM: {rpm_is}\n\t\t\tMotor: {await motor_var.read_value()}')
             
 
