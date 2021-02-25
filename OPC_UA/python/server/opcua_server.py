@@ -40,13 +40,13 @@ async def rpm():
    if callback_flag:
       callback_flag , callback_count = False, 0
       if old_edge and new_edge:
-         return int(60/(((new_edge-old_edge)*10**(-9))*20))
+         rpm_is =  int(60/(((new_edge-old_edge)*10**(-9))*20))
       else:
-         return -1
+         rpm_is = -1
    else:
       if callback_count >10:
-         return 0
-      return -1
+         rpm_is = 0
+      rpm_is = -1
       
 @uamethod
 def func(parent, value):
@@ -75,9 +75,9 @@ async def main():
     async with server:
         while True:
             await asyncio.sleep(1)
-            pm_val = await rpm()
-            if rpm_val>0:
-                await myvar.write_value(rpm_val)
+            await rpm()
+            if rpm_is>0:
+                await myvar.write_value(rpm_is)
                 await _logger.info(f'RPM: {myvar.read_value()}')
             
 
