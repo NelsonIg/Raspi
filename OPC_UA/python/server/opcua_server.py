@@ -19,7 +19,7 @@ from asyncua.common.methods import uamethod
 edge = False
 old_edge = False
 new_edge = False
-rpm_is = -1
+rpm_is = -1.0
 downtime = None
 puls = Button(14)
 motor = Motor(26, 20)
@@ -75,8 +75,8 @@ async def main():
     # populating our address space
     # server.nodes, contains links to very common nodes like objects and root
     myobj = await server.nodes.objects.add_object(idx, 'Car')
-    rpm_var = await myobj.add_variable(idx, 'rpm', 0.0)
-    motor_var = await myobj.add_variable(idx, 'motor', 0.0)
+    rpm_var = await myobj.add_variable(idx, 'rpm', 0.1)
+    motor_var = await myobj.add_variable(idx, 'motor', 0.1)
     # Set MyVariable to be writable by clients
     await rpm_var.set_writable()
     await motor_var.set_writable()
