@@ -84,7 +84,7 @@ async def main():
     _logger.info('Starting server!')
     async with server:
         while True:
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.1)
             rpm_is = await rpm()
             if rpm_is>-1:
                 await rpm_var.write_value(rpm_is)
