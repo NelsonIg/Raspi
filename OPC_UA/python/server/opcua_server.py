@@ -19,7 +19,7 @@ from asyncua.common.methods import uamethod
 edge = False
 old_edge = False
 new_edge = False
-rpm_is = False
+rpm_is = -1
 downtime = None
 puls = Button(14)
 speed = 0
@@ -37,19 +37,21 @@ def callback_rpm():
 
 async def rpm():
    global old_edge, new_edge, callback_flag, callback_count, rpm_is
+   _logger.info(f'{rpm_is}, {callback_count}')
    if callback_flag:
       callback_flag , callback_count = False, 0
       if old_edge and new_edge:
-         rpm_is =  int(60/(((new_edge-old_edge)*10**(-9))*20))
+         return  int(60/(((new_edge-old_edge)*10**(-9))*20))
       else:
-         rpm_is = -1
+         return -1
    else:
       if callback_count >10:
-         rpm_is = 0
-      else: 
-         rpm_is = -1
+         return = 0
+      else:
          callback_count+=1
-   _logger.info(f'{rpm_is}, {callback_count}')
+         return -1
+         
+   
       
 @uamethod
 def func(parent, value):
@@ -81,7 +83,7 @@ async def main():
     async with server:
         while True:
             await asyncio.sleep(1)
-            await rpm()
+            rpm_is = await rpm()
             if rpm_is>-1:
                 await rpm_var.write_value(rpm_is)
                 await _logger.info(f'RPM: {rpm_is}')
