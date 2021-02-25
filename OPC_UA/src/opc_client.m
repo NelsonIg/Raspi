@@ -19,5 +19,13 @@ while notConnected
 end
 %uaClient = opcua('opc.tcp://192.168.0.183:4840/opcua');
 connect(uaClient)
-staticNode = findNodeByName(uaClient.Namespace,"MyObject",'-once');
-readValue(uaClient, staticNode.Children)
+staticNode = findNodeByName(uaClient.Namespace,"MyCar",'-once');
+rpm = ones(1,100);
+i = 1;
+while i < 101 
+    rpm(i) = readValue(uaClient, staticNode.Children);
+    pause(1);
+    i = i+1;
+end
+figure
+plot(rpm);
