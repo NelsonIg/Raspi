@@ -75,7 +75,7 @@ async def main():
     async with server:
         while True:
             await asyncio.sleep(1)
-            await rpm_val = rpm()
+            pm_val = await rpm()
             if rpm_val>0:
                 await myvar.write_value(rpm_val)
                 await _logger.info(f'RPM: {myvar.read_value()}')
