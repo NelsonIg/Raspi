@@ -56,7 +56,7 @@ def func(parent, value):
 
 async def main():
     global rpm_is
-    puls.when_pressed = callback_rpm # set callback
+    puls.when_pressed = await callback_rpm # set callback
     # setup our server
     server = Server()
     await server.init()
