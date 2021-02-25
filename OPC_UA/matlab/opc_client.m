@@ -35,6 +35,6 @@ plot(rpm);
 S = opcuaserverinfo(host);
 uaClient = opcua(S(1));
 connect(uaClient)
-Car = findNodeByName(uaClient.Namespace, 'Car', 'once')
-motor = findNodeByName(Car, 'motor')
-motor.writeValue(100);
+Car = findNodeByName(uaClient.Namespace, 'Car', '-once')
+motor = findNodeByName(Car, 'motor', '-once')
+motor.writeValue(0.5);

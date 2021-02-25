@@ -23,7 +23,7 @@ rpm_is = -1
 downtime = None
 puls = Button(14)
 motor = Motor(26, 20)
-speed = 0
+speed = 0.0
 callback_flag, callback_count = False, 0
 
 logging.basicConfig(level=logging.INFO)
