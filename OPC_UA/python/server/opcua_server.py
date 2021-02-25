@@ -70,10 +70,12 @@ async def main():
 
     # populating our address space
     # server.nodes, contains links to very common nodes like objects and root
-    myobj = await server.nodes.objects.add_object(idx, 'MyObject')
-    myvar = await myobj.add_variable(idx, 'MyVariable', 6.7)
+    myobj = await server.nodes.objects.add_object(idx, 'Car')
+    rpm_var = await myobj.add_variable(idx, 'rpm', 0)
+    motor_var = await myobj.add_variable(idx, 'motor', 0)
     # Set MyVariable to be writable by clients
-    await myvar.set_writable()
+    await rpm_var.set_writable()
+    await motor_var.set_writable()
     await server.nodes.objects.add_method(ua.NodeId('ServerMethod', 2), ua.QualifiedName('ServerMethod', 2), func, [ua.VariantType.Int64], [ua.VariantType.Int64])
     _logger.info('Starting server!')
     async with server:
@@ -81,8 +83,8 @@ async def main():
             await asyncio.sleep(1)
             await rpm()
             if rpm_is>-1:
-                await myvar.write_value(rpm_is)
-                #await _logger.info(f'RPM: {rpm_is}')
+                await rpm_var.write_value(rpm_is)
+                await _logger.info(f'RPM: {rpm_is}')
             
 
 
