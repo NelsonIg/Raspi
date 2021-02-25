@@ -46,9 +46,10 @@ async def rpm():
    else:
       if callback_count >10:
          rpm_is = 0
-      rpm_is = -1
-   callback_count+=1
-   _logger.info(f'{rpm_is}')
+      else: 
+         rpm_is = -1
+         callback_count+=1
+   _logger.info(f'{rpm_is}, {callback_count}')
       
 @uamethod
 def func(parent, value):
