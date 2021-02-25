@@ -76,7 +76,7 @@ async def main():
         while True:
             await asyncio.sleep(1)
             await myvar.write_value(rpm())
-            _logger.info('Set value of %s to %.1f', myvar, new_val)
+            await _logger.info(f'RPM: {myvar.read_value()}')
             await myvar.write_value(new_val)
 
 
