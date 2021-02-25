@@ -32,7 +32,7 @@ async def callback_rpm():
    global old_edge, new_edge, rpm_is, edge, callback_flag
    edge = True
    old_edge = new_edge
-   new_edge = time.clock_gettime_ns(time.CLOCK_MONOTONIC)
+   await new_edge = time.clock_gettime_ns(time.CLOCK_MONOTONIC)
    callback_flag = True
 
 async def rpm():
@@ -56,7 +56,7 @@ def func(parent, value):
 
 async def main():
     global rpm_is
-    await puls.when_pressed = callback_rpm # set callback
+    puls.when_pressed = callback_rpm # set callback
     # setup our server
     server = Server()
     await server.init()
