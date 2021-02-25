@@ -28,7 +28,7 @@ callback_flag, callback_count = False, 0
 logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger('asyncua')
 
-await def callback_rpm():
+async def callback_rpm():
    global old_edge, new_edge, rpm_is, edge, callback_flag
    edge = True
    old_edge = new_edge
@@ -56,7 +56,7 @@ def func(parent, value):
 
 async def main():
     global rpm_is
-    puls.when_pressed = callback_rpm # set callback
+    await puls.when_pressed = callback_rpm # set callback
     # setup our server
     server = Server()
     await server.init()
