@@ -57,7 +57,7 @@ async def main():
     server = Server()
     await server.init()
     # server.set_endpoint("opc.tcp://localhost:4840/freeopcua/server/")
-    server.set_endpoint("opc.tcp://0.0.0.0:4840/freeopcua/server/")
+    server.set_endpoint("opc.tcp://pi.local:4840/freeopcua/server/")
     server.set_server_name("FreeOpcUa Example Server")
 
     # setup our own namespace
