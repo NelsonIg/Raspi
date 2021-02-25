@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+
+import sys
+import time
+from gpiozero import Motor, Button
+import time
+
 import logging
 
 import asyncio
@@ -9,17 +16,45 @@ sys.path.insert(0, "..")
 from asyncua import ua, Server
 from asyncua.common.methods import uamethod
 
+edge = False
+old_edge = False
+new_edge = False
+rpm_is = False
+downtime = None
+puls = Button(14)
+speed = 0
+callback_flag, callback_count = False, 0
 
 logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger('asyncua')
 
+async def callback_rpm():
+   global old_edge, new_edge, rpm_is, edge, callback_flag
+   edge = True
+   old_edge = new_edge
+   new_edge = time.clock_gettime_ns(time.CLOCK_MONOTONIC)
+   callback_flag = True
 
+async def rpm():
+   global old_edge, new_edge, callback_flag, callback_count, rpm_is
+   if callback_flag:
+      callback_flag , callback_count = False, 0
+      if old_edge and new_edge:
+         return int(60/(((new_edge-old_edge)*10**(-9))*20))
+      else:
+         return -1
+   else:
+      if callback_count >10:
+         return 0
+      return -1
+      
 @uamethod
 def func(parent, value):
     return value * 2
 
 
 async def main():
+    puls.when_pressed = callback_rpm # set callback
     # setup our server
     server = Server()
     await server.init()
@@ -40,7 +75,7 @@ async def main():
     async with server:
         while True:
             await asyncio.sleep(1)
-            new_val = await myvar.get_value() + 0.1
+            await myvar.write_value(rpm())
             _logger.info('Set value of %s to %.1f', myvar, new_val)
             await myvar.write_value(new_val)
 
