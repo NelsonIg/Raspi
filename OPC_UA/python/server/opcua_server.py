@@ -22,6 +22,7 @@ new_edge = False
 rpm_is = -1
 downtime = None
 puls = Button(14)
+motor = Motor(26, 20)
 speed = 0
 callback_flag, callback_count = False, 0
 
@@ -51,8 +52,9 @@ async def rpm():
          callback_count+=1
          return -1
          
-   
-      
+ 
+
+  
 @uamethod
 def func(parent, value):
     return value * 2
@@ -86,7 +88,8 @@ async def main():
             rpm_is = await rpm()
             if rpm_is>-1:
                 await rpm_var.write_value(rpm_is)
-                _logger.info(f'\t\tRPM: {rpm_is}\n\t\t\tMotor: {await motor_var.read_value()}')
+            await motor.forward(motor_var.read_value()) 
+            _logger.info(f'\t\tRPM: {rpm_is}\n\t\t\tMotor: {await motor_var.read_value()}')
             
 
 
