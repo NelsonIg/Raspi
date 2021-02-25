@@ -75,8 +75,8 @@ async def main():
     # populating our address space
     # server.nodes, contains links to very common nodes like objects and root
     myobj = await server.nodes.objects.add_object(idx, 'Car')
-    rpm_var = await myobj.add_variable(idx, 'rpm', 0)
-    motor_var = await myobj.add_variable(idx, 'motor', 0)
+    rpm_var = await myobj.add_variable(idx, 'rpm', 0.0)
+    motor_var = await myobj.add_variable(idx, 'motor', 0.0)
     # Set MyVariable to be writable by clients
     await rpm_var.set_writable()
     await motor_var.set_writable()
