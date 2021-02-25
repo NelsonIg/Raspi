@@ -31,10 +31,42 @@ figure
 plot(rpm);
 
 %% Read and Write Values
-
-S = opcuaserverinfo(host);
-uaClient = opcua(S(1));
-connect(uaClient)
-Car = findNodeByName(uaClient.Namespace, 'Car', '-once')
-motor = findNodeByName(Car, 'motor', '-once')
-motor.writeValue(0.5);
+clear;
+host = '192.168.0.183';
+[status, uaClient] = connectOpcua(host);
+Car = findNodeByName(uaClient.Namespace, 'Car', '-once');
+motor = findNodeByName(Car, 'motor', '-once');
+rpm = findNodeByName(Car, 'rpm', '-once');
+rpmSet = 100;
+step = 0.002;
+period = 0.01; % sec
+speed = 0;
+i = 1;
+error = 0;
+motor.writeValue(0.0);
+pause(2);
+rpmVals = ones(1,1000);
+while i<1001
+    if error < 0
+        speed = speed - step;
+    else
+        speed = speed + step;
+    end
+    if speed > 1
+        speed = 1;
+    end
+    if speed < 0
+        speed = 0;
+    end
+    motor.writeValue(speed)
+    rpmIs = rpm.readValue()
+    rpmVals(i) = rpmIs;
+    if rpmIs > -1
+        error = rpmSet-rpmIs;
+    end
+    pause(0.01)
+    i = i+1;
+end
+figure
+plot(rpmVals);
+    
