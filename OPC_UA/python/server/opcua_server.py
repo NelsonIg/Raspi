@@ -88,7 +88,8 @@ async def main():
             rpm_is = await rpm()
             if rpm_is>-1:
                 await rpm_var.write_value(rpm_is)
-            await motor.forward(motor_var.read_value()) 
+            speed = await motor_var.read_value()
+            await motor.forward(speed) 
             _logger.info(f'\t\tRPM: {rpm_is}\n\t\t\tMotor: {await motor_var.read_value()}')
             
 
