@@ -128,7 +128,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Added by me
+# Additional Stuff
 secrets.h
 secret.h
 .idea/
+
+# Simulink/Matlab
+slprj/
+*.slxc
