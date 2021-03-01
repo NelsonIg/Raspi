@@ -44,8 +44,10 @@ async def main():
 
     # populateing address space
     motor = await server.nodes.objects.add_object(idx, "Motor", base_motor)
-    rpm_Var = await motor.get_child([f"{idx}:RPM"])
-    speed_var = await motor.get_child([f"{idx}:Speed"])
+    rpm_var = await motor.get_child([f"{idx}:RPM"]) # rounds per minute
+    rpm_var.set_writable()
+    speed_var = await motor.get_child([f"{idx}:Speed"]) # motor speed
+    speed_var.set_writable()
     
     # Start!
     async with server:
