@@ -2,9 +2,74 @@
 
 import asyncio
 import logging
+
 from datetime import datetime
+
 import time
+
+from gpiozero import Motor, Button
+
 from asyncua import ua, uamethod, Server
+
+edge = False
+old_edge = False
+new_edge = False
+rpm_is = -1
+downtime = None
+puls = Button(14)
+motor = Motor(26, 20)
+speed = 0.0
+callback_flag, callback_count = False, 0
+
+logging.basicConfig(level=logging.INFO)
+_logger = logging.getLogger('asyncua')
+
+def callback_rpm():
+   global old_edge, new_edge, rpm_is, edge, callback_flag
+   edge = True
+   old_edge = new_edge
+   new_edge = time.clock_gettime_ns(time.CLOCK_MONOTONIC)
+   callback_flag = True
+
+async def rpm():
+   global old_edge, new_edge, callback_flag, callback_count, rpm_is
+   _logger.info(f'\t\tCallbackCount: {callback_count}')
+   if callback_flag:
+      callback_flag , callback_count = False, 0
+      if old_edge and new_edge:
+         return  int(60/(((new_edge-old_edge)*10**(-9))*20))
+      else:
+         return -1
+   else:
+      if callback_count >10:
+         return 0
+      else:
+         callback_count+=1
+         return -1
+         
+
+
+# functions for updating data and controlling motor
+async def set_speed(motor_var):
+    '''
+    Set motor speed (0.0-1.0)
+    '''
+    speed = await motor_var.read_value()
+    try:
+        motor.forward(speed)
+    except ValueError:
+        _logger.warning(f'\t\t{speed} no valid speed')
+    return speed
+
+async def get_rpm(rpm_var):
+    '''
+    read round per minute periodically
+    '''
+    await asyncio.sleep(0.05)
+    rpm_is = await rpm()
+    if rpm_is>-1:
+        await rpm_var.write_value(rpm_is)
+    return rpm_is
 
 
 # Class for Subscription Handling
@@ -18,7 +83,7 @@ class SubHandler(object):
 
     def event_notification(self, event):
         print("Python: New event", event)
-
+        
 async def motor_object(idx, server):
     '''
     Create custom motor base object
@@ -33,6 +98,7 @@ async def motor_object(idx, server):
     base_speed_var = await base_motor.add_variable(idx, "Speed", 0.0)
     await base_speed_var.set_modelling_rule(True)
     return base_motor
+    
     
 async def main():
 
@@ -65,7 +131,8 @@ async def main():
     # Start!
     async with server:
         while True:
-            await asyncio.sleep(0.1)
+            rpm_is, speed = await asyncio.gather(*(get_rpm(rpm_var), set_speed(motor_var)))
+            _logger.info(f'\t\tRPM: {rpm_is}\n\t\t\tMotor: {await motor_var.read_value()}')
             
 
 if __name__ == '__main__':
