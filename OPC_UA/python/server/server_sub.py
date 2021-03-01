@@ -19,7 +19,7 @@ class SubHandler(object):
     def event_notification(self, event):
         print("Python: New event", event)
 
-async def motor_object(idx):
+async def motor_object(idx, server):
     '''
     Create custom motor base object
     - BaseMotor
@@ -52,7 +52,7 @@ async def main():
     idx = await server.register_namespace(uri)
     
     # create Motor-node type for later use
-    base_motor = await motor_object(idx)
+    base_motor = await motor_object(idx, server)
 
 
     # populateing address space
