@@ -40,15 +40,16 @@ async def main():
     # create Motor-node type for later use
     base_motor = await server.nodes.base_object_type.add_object_type(idx, "BaseMotor")
     base_rpm_var = await base_motor.add_variable(idx, "RPM", 0.0)
-    base_rpm_var.set_modelling_rule(True)
-    base_rpm_var.set_writable()
-    await (await base_motor.add_variable(idx, "Speed", 0.0)).set_modelling_rule(True)
+    await base_rpm_var.set_modelling_rule(True)
+    base_speed_var = await base_motor.add_variable(idx, "Speed", 0.0)
+    base_speed_var.set_modelling_rule(True)
 
     # populateing address space
     motor = await server.nodes.objects.add_object(idx, "Motor", base_motor)
     rpm_var = await motor.get_child([f"{idx}:RPM"]) # rounds per minute
+    await rpm_var.set_writable()
     speed_var = await motor.get_child([f"{idx}:Speed"]) # motor speed
-    speed_var.set_writable()
+    await speed_var.set_writable()
     
     # Start!
     async with server:
