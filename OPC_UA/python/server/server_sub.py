@@ -11,7 +11,7 @@ from gpiozero import Motor, Button
 
 from asyncua import ua, uamethod, Server
 
-edge = False
+
 old_edge = False
 new_edge = False
 rpm_is = -1
@@ -25,14 +25,13 @@ logging.basicConfig(level=logging.INFO)
 _logger = logging.getLogger('asyncua')
 
 def callback_rpm():
-   global old_edge, new_edge, rpm_is, edge, callback_flag
-   edge = True
+   global old_edge, new_edge, callback_flag
    old_edge = new_edge
    new_edge = time.clock_gettime_ns(time.CLOCK_MONOTONIC)
    callback_flag = True
 
 async def rpm():
-   global old_edge, new_edge, callback_flag, callback_count, rpm_is
+   global old_edge, new_edge, callback_flag, callback_count
    _logger.info(f'\t\tCallbackCount: {callback_count}')
    if callback_flag:
       callback_flag , callback_count = False, 0
@@ -101,7 +100,10 @@ async def motor_object(idx, server):
     
     
 async def main():
-
+    global rpm_is
+    
+    puls.when_pressed = callback_rpm # set callback
+    
     # initialize Server
     server = Server()
     await server.init()
