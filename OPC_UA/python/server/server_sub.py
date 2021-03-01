@@ -19,7 +19,21 @@ class SubHandler(object):
     def event_notification(self, event):
         print("Python: New event", event)
 
-
+async def motor_object(idx):
+    '''
+    Create custom motor base object
+    - BaseMotor
+        - RPM
+        - Speed
+    '''
+    # create Motor-node type for later use
+    base_motor = await server.nodes.base_object_type.add_object_type(idx, "BaseMotor")
+    base_rpm_var = await base_motor.add_variable(idx, "RPM", 0.0)
+    await base_rpm_var.set_modelling_rule(True)
+    base_speed_var = await base_motor.add_variable(idx, "Speed", 0.0)
+    await base_speed_var.set_modelling_rule(True)
+    return base_motor
+    
 async def main():
 
     # initialize Server
@@ -38,12 +52,8 @@ async def main():
     idx = await server.register_namespace(uri)
     
     # create Motor-node type for later use
-    base_motor = await server.nodes.base_object_type.add_object_type(idx, "BaseMotor")
-    base_rpm_var = await base_motor.add_variable(idx, "RPM", 0.0)
-    await base_rpm_var.set_modelling_rule(True)
-    base_speed_var = await base_motor.add_variable(idx, "Speed", 0.0)
-    await base_speed_var.set_modelling_rule(True)
-    await base_speed_var.set_writable()
+    base_motor = await motor_object()
+
 
     # populateing address space
     motor = await server.nodes.objects.add_object(idx, "Motor", base_motor)
