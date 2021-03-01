@@ -51,4 +51,9 @@ async def main():
     async with server:
         while True:
             await asyncio.sleep(0.1)
+            
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
+    asyncio.run(main())
     
