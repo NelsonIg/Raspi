@@ -9,7 +9,7 @@ from asyncua import ua, uamethod, Server
 
 # Class for Subscription Handling
 class SubHandler(object):
-        """
+    """
     Subscription Handler. To receive events from server for a subscription
     """
 
