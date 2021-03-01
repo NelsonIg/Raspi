@@ -42,7 +42,7 @@ async def main():
     base_rpm_var = await base_motor.add_variable(idx, "RPM", 0.0)
     await base_rpm_var.set_modelling_rule(True)
     base_speed_var = await base_motor.add_variable(idx, "Speed", 0.0)
-    base_speed_var.set_modelling_rule(True)
+    await base_speed_var.set_modelling_rule(True)
 
     # populateing address space
     motor = await server.nodes.objects.add_object(idx, "Motor", base_motor)
