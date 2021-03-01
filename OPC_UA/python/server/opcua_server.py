@@ -58,7 +58,22 @@ async def rpm():
 def func(parent, value):
     return value * 2
 
+async def set_speed(motor_var):
+    speed = await motor_var.read_value()
+    try:
+        motor.forward(speed)
+    except ValueError:
+        _logger.warning(f'\t\t{speed} no valid speed')
+    return speed
 
+async def get_rpm(rpm_var):
+    await asyncio.sleep(0.05)
+    rpm_is = await rpm()
+    if rpm_is>-1:
+        await rpm_var.write_value(rpm_is)
+    return rpm_is
+    
+    
 async def main():
     global rpm_is
     puls.when_pressed = callback_rpm # set callback
@@ -83,15 +98,16 @@ async def main():
     _logger.info('Starting server!')
     async with server:
         while True:
-            await asyncio.sleep(0.05)
-            rpm_is = await rpm()
-            if rpm_is>-1:
-                await rpm_var.write_value(rpm_is)
-            speed = await motor_var.read_value()
-            try:
-                motor.forward(speed)
-            except ValueError:
-                _logger.warning(f'\t\t{speed} no valid speed')
+            #await asyncio.sleep(0.05)
+            #rpm_is = await rpm()
+            #if rpm_is>-1:
+            #    await rpm_var.write_value(rpm_is)
+            #speed = await motor_var.read_value()
+            #try:
+            #    motor.forward(speed)
+            #except ValueError:
+            #    _logger.warning(f'\t\t{speed} no valid speed')
+            rpm_is, speed = await asyncio.gather(*(get_rpm(rpm_var), set_speed(motor_var)))
             _logger.info(f'\t\tRPM: {rpm_is}\n\t\t\tMotor: {await motor_var.read_value()}')
             
 
