@@ -52,7 +52,7 @@ async def main():
     idx = await server.register_namespace(uri)
     
     # create Motor-node type for later use
-    base_motor = await motor_object()
+    base_motor = await motor_object(idx)
 
 
     # populateing address space
