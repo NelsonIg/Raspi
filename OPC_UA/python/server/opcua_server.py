@@ -53,7 +53,6 @@ async def rpm():
          return -1
          
  
-
   
 @uamethod
 def func(parent, value):
@@ -84,7 +83,7 @@ async def main():
     _logger.info('Starting server!')
     async with server:
         while True:
-            await asyncio.sleep(0.001)
+            await asyncio.sleep(0.05)
             rpm_is = await rpm()
             if rpm_is>-1:
                 await rpm_var.write_value(rpm_is)
