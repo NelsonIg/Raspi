@@ -62,7 +62,7 @@ async def set_speed(motor_var):
         _logger.warning(f'\t\t{speed} no valid speed')
     return speed
 
-def set_speed_loop(motor_var):
+async def set_speed_loop(motor_var):
     '''
     Run set_speed in loop
     '''
