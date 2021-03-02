@@ -27,7 +27,7 @@ _logger = logging.getLogger('asyncua')
 def callback_rpm():
    global old_edge, new_edge, callback_flag
    old_edge = new_edge
-   new_edge = time.clock_gettime_ns(time.CLOCK_MONOTONIC)
+   new_edge = time.perf_counter_ns()
    callback_flag = True
 
 async def rpm():
