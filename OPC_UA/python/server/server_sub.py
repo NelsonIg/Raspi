@@ -11,7 +11,7 @@ from gpiozero import Motor, Button
 
 from asyncua import ua, uamethod, Server
 
-import threading
+import concurrent.futures
 
 old_edge = False
 new_edge = False
@@ -76,13 +76,18 @@ async def get_rpm(rpm_var):
     '''
     read round per minute periodically
     '''
-    #await asyncio.sleep(0.02)
+    await asyncio.sleep(0.02)
     rpm_is = await rpm()
     if rpm_is>-1:
         await rpm_var.write_value(rpm_is)
     return rpm_is
 
-
+async def get_rpm_loop(rpm_var)
+    while True:
+        await get_rpm(rpm_var)
+        await asyncio.sleep(0.02)
+        
+        
 # Class for Subscription Handling
 class SubHandler(object):
     """
@@ -144,14 +149,13 @@ async def main():
     
     # Start!
     async with server:
-        # start daemon that sets motor speed
-        speed_thread = threading.Thread(target=set_speed_loop, args=[speed_var])
-        speed_thread.start()
-        while True:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as ex:
+            await ex.submit(set_speed_loop, speed_var)
+            await ex.submit(get_rpm_loop, rpm_var)
+        #while True:
             #rpm_is, speed_is = await asyncio.gather(*(get_rpm(rpm_var), set_speed(speed_var)))
             #_logger.info(f'\t\tRPM: {rpm_is}\n\t\t\tMotor: {speed_is}')
-            await asyncio.sleep(0.02)
-            await get_rpm(rpm_var)
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
