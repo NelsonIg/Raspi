@@ -62,7 +62,7 @@ async def set_speed(motor_var):
         _logger.warning(f'\t\t{speed} no valid speed')
     return speed
 
-async def set_speed_loop(motor_var):
+def set_speed_loop(motor_var):
     '''
     Run set_speed in loop
     '''
@@ -149,11 +149,8 @@ async def main():
     
     # Start!
     async with server:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as ex:
-            ex.submit(set_speed_loop, speed_var)
-            ex.submit(get_rpm_loop, rpm_var)
-        #while True:
-            #rpm_is, speed_is = await asyncio.gather(*(get_rpm(rpm_var), set_speed(speed_var)))
+        while True:
+            rpm_is, speed_is = await asyncio.gather(*(get_rpm(rpm_var), set_speed(speed_var)))
             #_logger.info(f'\t\tRPM: {rpm_is}\n\t\t\tMotor: {speed_is}')
 
 
