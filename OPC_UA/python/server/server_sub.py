@@ -64,7 +64,7 @@ async def get_rpm(rpm_var):
     '''
     read round per minute periodically
     '''
-    await asyncio.sleep(0.025)
+    await asyncio.sleep(1)
     rpm_is = await rpm()
     if rpm_is>-1:
         await rpm_var.write_value(rpm_is)
