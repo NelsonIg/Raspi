@@ -11,6 +11,7 @@ from gpiozero import Motor, Button
 
 from asyncua import ua, uamethod, Server
 
+import threading
 
 old_edge = False
 new_edge = False
@@ -60,11 +61,20 @@ async def set_speed(motor_var):
         _logger.warning(f'\t\t{speed} no valid speed')
     return speed
 
+async def set_speed_loop(motor_var):
+    '''
+    Run set_speed in loop
+    '''
+    while True:
+        await set_speed(motor_var)
+        await asyncio.sleep(0.001)
+        
+
 async def get_rpm(rpm_var):
     '''
     read round per minute periodically
     '''
-    await asyncio.sleep(0.02)
+    #await asyncio.sleep(0.02)
     rpm_is = await rpm()
     if rpm_is>-1:
         await rpm_var.write_value(rpm_is)
@@ -132,10 +142,13 @@ async def main():
     
     # Start!
     async with server:
+        # start daemon that sets motor speed
+        speed_deamon = threading.Thread(target=set_speed_loop, args=[speed_var], deamon=True)
+        speed_deamon.start()
         while True:
-            rpm_is, speed_is = await asyncio.gather(*(get_rpm(rpm_var), set_speed(speed_var)))
+            #rpm_is, speed_is = await asyncio.gather(*(get_rpm(rpm_var), set_speed(speed_var)))
             #_logger.info(f'\t\tRPM: {rpm_is}\n\t\t\tMotor: {speed_is}')
-            
+            get_rpm(rpm_var)
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
