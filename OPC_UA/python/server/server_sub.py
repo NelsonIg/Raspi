@@ -144,11 +144,11 @@ async def main():
     async with server:
         # start daemon that sets motor speed
         speed_daemon = threading.Thread(target=set_speed_loop, args=[speed_var], daemon=True)
-        speed_daemon.start()
+        await speed_daemon.start()
         while True:
             #rpm_is, speed_is = await asyncio.gather(*(get_rpm(rpm_var), set_speed(speed_var)))
             #_logger.info(f'\t\tRPM: {rpm_is}\n\t\t\tMotor: {speed_is}')
-            get_rpm(rpm_var)
+            await get_rpm(rpm_var)
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
