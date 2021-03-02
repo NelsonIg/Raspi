@@ -62,7 +62,7 @@ async def main():
                         _logger.info(e)
                         # leave context manager to close connection
                         break
-        except ConnectionRefusedError as e:
+        except Exception as e:
             _logger.info(e)
     print(handler.timestamps)
 

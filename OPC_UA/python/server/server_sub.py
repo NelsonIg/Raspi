@@ -148,6 +148,7 @@ async def main():
         while True:
             #rpm_is, speed_is = await asyncio.gather(*(get_rpm(rpm_var), set_speed(speed_var)))
             #_logger.info(f'\t\tRPM: {rpm_is}\n\t\t\tMotor: {speed_is}')
+            await asyncio.sleep(0.02)
             await get_rpm(rpm_var)
 
 if __name__ == '__main__':
