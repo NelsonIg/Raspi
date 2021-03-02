@@ -33,7 +33,7 @@ def callback_rpm():
 
 async def rpm():
    global old_edge, new_edge, callback_flag, callback_count
-   _logger.info(f'\t\tCallbackCount: {callback_count}')
+   #_logger.info(f'\t\tCallbackCount: {callback_count}')
    if callback_flag:
       callback_flag , callback_count = False, 0
       if old_edge and new_edge:
@@ -66,6 +66,7 @@ async def set_speed_loop(motor_var):
     '''
     Run set_speed in loop
     '''
+    _logger.info(f'speed_loop entered')
     while True:
         await set_speed(motor_var)
         await asyncio.sleep(0.01)
