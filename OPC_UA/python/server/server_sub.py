@@ -55,7 +55,7 @@ async def set_speed(motor_var):
     Set motor speed (0.0-1.0)
     '''
     speed = await motor_var.read_value()
-    _logger.info(f'speed:\t\t{speed} ')
+    # _logger.info(f'speed:\t\t{speed} ')
     try:
         motor.forward(speed)
     except ValueError:
