@@ -82,7 +82,7 @@ async def get_rpm(rpm_var):
         await rpm_var.write_value(rpm_is)
     return rpm_is
 
-async def get_rpm_loop(rpm_var)
+async def get_rpm_loop(rpm_var):
     while True:
         await get_rpm(rpm_var)
         await asyncio.sleep(0.02)
