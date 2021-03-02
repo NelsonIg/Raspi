@@ -67,7 +67,7 @@ async def set_speed_loop(motor_var):
     '''
     while True:
         await set_speed(motor_var)
-        await asyncio.sleep(0.001)
+        await asyncio.sleep(0.01)
         
 
 async def get_rpm(rpm_var):
