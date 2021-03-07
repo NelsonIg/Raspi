@@ -72,6 +72,7 @@ async def main(host_ip='192.168.0.183'):
 if __name__ == '__main__':
     if len(argv)>1:
         _logger.info(f'Host_ip:\t\t{argv[1]}')
+        
         # arguments entered
         asyncio.run(main(argv[1]))
     else:
