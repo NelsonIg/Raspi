@@ -51,6 +51,6 @@ alternativ:
 pip3 install -r requirements
 pip3 uninstall numpy
 pip3 uninstall pandas
-pip3 apt install python3-numpy
-pip3 apt install python3-pandas
+apt install python3-numpy
+apt install python3-pandas
 ```
