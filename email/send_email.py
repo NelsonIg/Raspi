@@ -11,9 +11,9 @@ if __name__ == '__main__':
     port = 465  # For SSL
     smtp_server = "smtp." + addr.split('@')[1]
     message = """\
-    Subject: Automated Email from Raspi
+Subject: Automated Email from Raspi
 
-    """ + msg
+""" + msg
     # Create a secure SSL context
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
