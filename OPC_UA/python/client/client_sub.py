@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
+
 import asyncio
 import logging
 import time
-
+from sys import argv
 
 from asyncua import Client, Node, ua
 
@@ -32,9 +34,9 @@ class SubscriptionHandler:
         self.timestamps.append(elapsed_time)
         _logger.info(f'datachange_notification {node} {val} {elapsed_time}')
 
-async def main():
+async def main(host_ip='192.168.0.183'):
     # client with server url and 4 sec. timout
-    client = Client(url='opc.tcp://192.168.0.183:4840/freeopcua/server/', timeout=4)
+    client = Client(url=f'opc.tcp://{host_ip}:4840/freeopcua/server/', timeout=4)
     not_connected = True
     while not_connected:
         try:
@@ -68,4 +70,9 @@ async def main():
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    if len(argv)>1:
+        _logger.info(f'Host_ip:\t\t{argv[1]}')
+        # arguments entered
+        asyncio.run(main(argv[1]))
+    else:
+        asyncio.run(main())
